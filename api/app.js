@@ -4,6 +4,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const routes = require('./routes');
 
 // variable to enable global error logging
@@ -11,6 +12,9 @@ const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'tr
 
 // create the Express app
 const app = express();
+
+// enable CORS
+app.use(cors());
 
 // body parsing
 app.use(express.json());
