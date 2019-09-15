@@ -8,6 +8,7 @@ import './global.css';
 // components
 import Nav from './Components/Nav';
 import Courses from './Components/Courses';
+import CourseDetail from './Components/CourseDetail';
 
 const api = 'http://localhost:5000/api';
 
@@ -26,6 +27,17 @@ class App extends Component {
       });
   }
 
+  findCourse = courseId => {
+    this.state.courses.forEach(course => {
+      if (course._id === courseId) {
+        console.log(course);
+        return course;
+      } else {
+        return 'Course not found';
+      }
+    });
+  }
+
   render() {
     return (
       <BrowserRouter>
@@ -36,6 +48,7 @@ class App extends Component {
             <Switch>
               {/* Default Route */}
               <Route exact path="/" render={() => <Courses courses={this.state.courses}/>} />
+              <Route path="/course/:id" render={(props) => <CourseDetail findCourse={this.findCourse} {...props} />} />
             </Switch>
           </div>
         </div>
