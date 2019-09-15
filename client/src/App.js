@@ -44,12 +44,7 @@ class App extends Component {
               {/* Default Route */}
               <Route exact path="/" render={() => <Courses courses={this.state.courses}/>} />
               {/* Individual Course Detail */}
-              <Route path="/course/:id" render={({match}) => {
-                console.log('Courses from state: ' + this.state.courses);
-                const course = this.state.courses.find(course => course._id === match.params.id);
-                console.log('Course from Route: ' + course);
-                return <CourseDetail course={course} />
-              }} />
+              <Route path="/course/:id" render={({match}) => <CourseDetail courseId={match.params.id} runFetch={this.runFetch} />} />
             </Switch>
           </div>
         </div>

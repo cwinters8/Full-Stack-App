@@ -1,19 +1,29 @@
-import React from 'react';
+import React, {Component} from 'react';
 
-const CourseDetail = props => {
-  const course = props.course;
-  console.log('Course from props: ' + course);
+class CourseDetail extends Component {
+  state = {
+    courseId: this.props.courseId,
+    courseData: {}
+  }
 
-  return (
-    <div className="bounds course--detail">
-      <div className="grid-66">
-        <div className="course--header">
-          <h4 className="course--label">Course</h4>
-          {/* <h3 className="course--title">{course.title}</h3> */}
+  componentDidMount() {
+    this.props.runFetch(`courses/${this.state.courseId}`, data => {
+      this.setState({courseData: data});
+    });
+  }
+
+  render() {
+    return (
+      <div className="bounds course--detail">
+        <div className="grid-66">
+          <div className="course--header">
+            <h4 className="course--label">Course</h4>
+            <h3 className="course--title">{this.state.courseData.title}</h3>
+          </div>
         </div>
       </div>
-    </div>
-  )
+    );
+  }
 }
 
 export default CourseDetail;
