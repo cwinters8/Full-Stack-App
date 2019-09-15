@@ -17,24 +17,19 @@ class App extends Component {
     courses: []
   }
 
-  componentDidMount() {
-    // get courses and put them into state
-    fetch(`${api}/courses`)
-      .then(response => {
-        response.json().then(data => {
-          this.setState({courses: data})
-        });
+  // helper function for retrieving data
+  runFetch = (path, callback) => {
+    fetch(`${api}/${path}`).then(response => {
+      response.json().then(data => {
+        callback(data);
       });
+    });
   }
 
-  findCourse = courseId => {
-    this.state.courses.forEach(course => {
-      if (course._id === courseId) {
-        console.log(course);
-        return course;
-      } else {
-        return 'Course not found';
-      }
+  componentDidMount() {
+    // get courses and put them into state
+    this.runFetch('courses', data => {
+      this.setState({courses: data});
     });
   }
 
@@ -48,7 +43,13 @@ class App extends Component {
             <Switch>
               {/* Default Route */}
               <Route exact path="/" render={() => <Courses courses={this.state.courses}/>} />
-              <Route path="/course/:id" render={(props) => <CourseDetail findCourse={this.findCourse} {...props} />} />
+              {/* Individual Course Detail */}
+              <Route path="/course/:id" render={({match}) => {
+                console.log('Courses from state: ' + this.state.courses);
+                const course = this.state.courses.find(course => course._id === match.params.id);
+                console.log('Course from Route: ' + course);
+                return <CourseDetail course={course} />
+              }} />
             </Switch>
           </div>
         </div>
