@@ -12,11 +12,16 @@ import Courses from './Components/Courses';
 const api = 'http://localhost:5000/api';
 
 class App extends Component {
-  runFetch = (query) => {
-    fetch(`${api}/${query}`)
+  state = {
+    courses: []
+  }
+
+  componentDidMount() {
+    // get courses and put them into state
+    fetch(`${api}/courses`)
       .then(response => {
         response.json().then(data => {
-          return data;
+          this.setState({courses: data})
         });
       });
   }
@@ -30,7 +35,7 @@ class App extends Component {
             <hr />
             <Switch>
               {/* Default Route */}
-              <Route exact path="/" render={() => <Courses runFetch={this.runFetch}/>} />
+              <Route exact path="/" render={() => <Courses courses={this.state.courses}/>} />
             </Switch>
           </div>
         </div>
