@@ -43,8 +43,9 @@ class App extends Component {
             <Switch>
               {/* Default Route */}
               <Route exact path="/" render={() => <Courses courses={this.state.courses}/>} />
-              {/* Individual Course Detail */}
-              <Route path="/course/:id" render={({match}) => <CourseDetail courseId={match.params.id} runFetch={this.runFetch} />} />
+              {/* View Course Detail */}
+              <Route path="/courses/:id" render={({match}) => <CourseDetail courseId={match.params.id} runFetch={this.runFetch} />} />
+              {/* Update Course */}
             </Switch>
           </div>
         </div>

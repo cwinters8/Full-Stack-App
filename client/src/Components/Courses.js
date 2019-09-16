@@ -5,7 +5,7 @@ const Courses = props => {
     <div className="bounds">
       {props.courses.map(course => {
         const id = course._id;
-        const link = `/course/${id}`;
+        const link = `/courses/${id}`;
         return <div key={id} className="grid-33">
           <a className="course--module course--link" href={link}>
             <h4 className="course--label">Course</h4>
