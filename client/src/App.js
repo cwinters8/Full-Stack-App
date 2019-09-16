@@ -46,6 +46,7 @@ class App extends Component {
               {/* View Course Detail */}
               <Route path="/courses/:id" render={({match}) => <CourseDetail courseId={match.params.id} runFetch={this.runFetch} />} />
               {/* Update Course */}
+              {/* Create Course */}
             </Switch>
           </div>
         </div>
