@@ -23,6 +23,12 @@ class CourseDetail extends Component {
     });
   }
 
+  deleteCourse = () => {
+    this.props.runFetch(`courses/${this.state.id}`, data => {
+      console.log(data);
+    }, "DELETE");
+  }
+
   render() {
     return (
       <div>
@@ -31,7 +37,7 @@ class CourseDetail extends Component {
             <div className="grid-100">
               <span>
                 <a className="button" href={`/courses/${this.state.id}/update`}>Update Course</a>
-                <a className="button" href="#">Delete Course</a>
+                <a onClick={this.deleteCourse} className="button" href="/">Delete Course</a>
               </span>
               <a className="button button-secondary" href="/">Return to List</a>
             </div>

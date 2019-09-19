@@ -18,8 +18,8 @@ class App extends Component {
   }
 
   // helper function for retrieving data
-  runFetch = (path, callback) => {
-    fetch(`${api}/${path}`).then(response => {
+  runFetch = (path, callback, method="GET") => {
+    fetch(`${api}/${path}`, {method: method}).then(response => {
       response.json().then(data => {
         callback(data);
       });
