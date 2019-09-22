@@ -18,8 +18,7 @@ const api = 'http://localhost:5000/api';
 class App extends Component {
   state = {
     courses: [],
-    email: '',
-    password: ''
+    user: {}
   }
 
   // helper function for retrieving data
@@ -36,6 +35,9 @@ class App extends Component {
     this.runFetch('courses', data => {
       this.setState({courses: data});
     });
+    // get user data from localStorage and put it in state
+    const user = JSON.parse(localStorage.getItem('user'));
+    this.setState({user: user});
   }
 
   // return an authorization header
@@ -51,9 +53,10 @@ class App extends Component {
     this.runFetch('users', (data, status) => {
       if (status === 200) {
         this.setState({
-          email: email,
-          password: data.password
+          user: data
         });
+        // persist user data
+        localStorage.setItem('user', JSON.stringify(data));
       }
       if (callback) {
         callback(status);
@@ -66,7 +69,7 @@ class App extends Component {
       <BrowserRouter>
         <div id="root">
           <div>
-            <Nav />
+            <Nav user={this.state.user} />
             <hr />
             <Switch>
               {/* Default Route */}
