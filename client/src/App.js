@@ -8,7 +8,7 @@ import './global.css';
 import './custom.css';
 
 // components
-import Nav from './Components/Nav';
+import Header from './Components/Header';
 import Courses from './Components/Courses';
 import CourseDetail from './Components/CourseDetail';
 import UserSignIn from './Components/UserSignIn';
@@ -78,7 +78,7 @@ class App extends Component {
       <BrowserRouter>
         <div id="root">
           <div>
-            <Nav user={this.state.user} />
+            <Header user={this.state.user} />
             <hr />
             <Switch>
               {/* Default Route */}

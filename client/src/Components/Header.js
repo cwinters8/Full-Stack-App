@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Nav = props => {
+const Header = props => {
   let nav;
   if (props.user) {
     nav = <nav><span>Welcome {props.user.firstName} {props.user.lastName}!</span><a className="signout" href="/sign-out">Sign Out</a></nav>
@@ -17,4 +17,4 @@ const Nav = props => {
   );
 }
 
-export default Nav;
+export default Header;
