@@ -11,7 +11,8 @@ import './custom.css';
 import Nav from './Components/Nav';
 import Courses from './Components/Courses';
 import CourseDetail from './Components/CourseDetail';
-import UserSignIn from './Components/SignIn';
+import UserSignIn from './Components/UserSignIn';
+import UserSignOut from './Components/UserSignOut';
 
 const api = 'http://localhost:5000/api';
 
@@ -64,6 +65,14 @@ class App extends Component {
     }, "GET", this.authHeader(email, password));
   }
 
+  // sign out
+  signOut = () => {
+    this.setState({
+      user: {}
+    });
+    localStorage.removeItem('user');
+  }
+
   render() {
     return (
       <BrowserRouter>
@@ -76,6 +85,8 @@ class App extends Component {
               <Route exact path="/" render={() => <Courses courses={this.state.courses}/>} />
               {/* Sign In */}
               <Route path="/sign-in" render={() => <UserSignIn signIn={this.signIn}/>} />
+              {/* Sign Out */}
+              <Route path="/sign-out" render={() => <UserSignOut signOut={this.signOut} />} />
               {/* View Course Detail */}
               <Route path="/courses/:id" render={({match}) => <CourseDetail courseId={match.params.id} runFetch={this.runFetch} />} />
               {/* Update Course */}

@@ -3,9 +3,9 @@ import React from 'react';
 const Nav = props => {
   let nav;
   if (props.user) {
-    nav = <nav><span>Welcome {props.user.firstName} {props.user.lastName}!</span><a className="signout" href="index.html">Sign Out</a></nav>
+    nav = <nav><span>Welcome {props.user.firstName} {props.user.lastName}!</span><a className="signout" href="/sign-out">Sign Out</a></nav>
   } else {
-    nav = <nav><a className="signup" href="sign-up">Sign Up</a><a className="signin" href="sign-in">Sign In</a></nav>
+    nav = <nav><a className="signup" href="sign-up">Sign Up</a><a className="signin" href="/sign-in">Sign In</a></nav>
   }
   return (
     <div className="header">

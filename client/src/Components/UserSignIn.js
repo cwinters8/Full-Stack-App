@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-// import {Redirect} from 'react-router-dom';
 
 class UserSignIn extends Component {
   cancel = event => {
@@ -22,7 +21,7 @@ class UserSignIn extends Component {
     this.props.signIn(email, password, status => {
       if (status === 200) {
         // route to home if sign in is successful
-        // window.location.href = '/';
+        window.location.href = '/';
       } else {
         // create error object and append to the DOM
         const newError = document.createElement('p');
