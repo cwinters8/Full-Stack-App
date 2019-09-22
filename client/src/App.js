@@ -26,7 +26,7 @@ class App extends Component {
   runFetch = (path, callback, method="GET", headers={}) => {
     fetch(`${api}/${path}`, {method: method, headers: new Headers(headers)}).then(response => {
       response.json().then(data => {
-        callback(data);
+        callback(data, response.status);
       });
     });
   }
@@ -47,12 +47,17 @@ class App extends Component {
   }
 
   // sign in a user
-  signIn = (email, password) => {
-    this.runFetch('users', data => {
-      this.setState({
-        email: email,
-        password: data.password
-      });
+  signIn = (email, password, callback) => {
+    this.runFetch('users', (data, status) => {
+      if (status === 200) {
+        this.setState({
+          email: email,
+          password: data.password
+        });
+      }
+      if (callback) {
+        callback(status);
+      }
     }, "GET", this.authHeader(email, password));
   }
 
@@ -67,7 +72,7 @@ class App extends Component {
               {/* Default Route */}
               <Route exact path="/" render={() => <Courses courses={this.state.courses}/>} />
               {/* Sign In */}
-              <Route path="/sign-in" render={() => <UserSignIn signIn={this.signIn} />} />
+              <Route path="/sign-in" render={() => <UserSignIn signIn={this.signIn}/>} />
               {/* View Course Detail */}
               <Route path="/courses/:id" render={({match}) => <CourseDetail courseId={match.params.id} runFetch={this.runFetch} />} />
               {/* Update Course */}
