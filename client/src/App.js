@@ -13,6 +13,7 @@ import Courses from './Components/Courses';
 import CourseDetail from './Components/CourseDetail';
 import UserSignIn from './Components/UserSignIn';
 import UserSignOut from './Components/UserSignOut';
+import UpdateCourse from './Components/UpdateCourse';
 
 const api = 'http://localhost:5000/api';
 
@@ -23,8 +24,8 @@ class App extends Component {
   }
 
   // helper function for retrieving data
-  runFetch = (path, callback, method="GET", headers={}) => {
-    fetch(`${api}/${path}`, {method: method, headers: new Headers(headers)}).then(response => {
+  runFetch = (path, callback, method="GET", headers={}, body) => {
+    fetch(`${api}/${path}`, {method: method, headers: new Headers(headers), body: JSON.stringify(body)}).then(response => {
       response.json().then(data => {
         callback(data, response.status);
       });
@@ -58,6 +59,7 @@ class App extends Component {
         });
         // persist user data
         localStorage.setItem('user', JSON.stringify(data));
+        localStorage.setItem('password', password);
       }
       if (callback) {
         callback(status);
@@ -88,8 +90,9 @@ class App extends Component {
               {/* Sign Out */}
               <Route path="/sign-out" render={() => <UserSignOut signOut={this.signOut} />} />
               {/* View Course Detail */}
-              <Route path="/courses/:id" render={({match}) => <CourseDetail courseId={match.params.id} runFetch={this.runFetch} />} />
+              <Route exact path="/courses/:id" render={({match}) => <CourseDetail courseId={match.params.id} runFetch={this.runFetch} />} />
               {/* Update Course */}
+              <Route path="/courses/:id/update" render={({match}) => <UpdateCourse courseId={match.params.id} runFetch={this.runFetch} auth={this.authHeader(this.state.user.emailAddress, this.state.user.password)} />} />
               {/* Create Course */}
             </Switch>
           </div>
