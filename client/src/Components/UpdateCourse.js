@@ -23,6 +23,7 @@ class UpdateCourse extends Component {
     });
   }
 
+  // go back to the course page
   goBack = (event, preventDefault=true) => {
     if (preventDefault) {
       event.preventDefault();
@@ -30,6 +31,7 @@ class UpdateCourse extends Component {
     window.location.href = `/courses/${this.state.id}`;
   }
 
+  // necessary for textarea fields. handles state changes as the user updates the field
   handleFormChange = (stateKey, event) => {
     const stateObj = {};
     stateObj[stateKey] = event.target.value;
@@ -38,20 +40,47 @@ class UpdateCourse extends Component {
 
   updateCourse = event => {
     event.preventDefault();
+    // build authorization header
     const crypto = new SimpleCrypto(process.env.REACT_APP_SECRET_KEY);
     const header = this.props.authHeader(
       JSON.parse(localStorage.getItem('user')).emailAddress, 
       crypto.decrypt(localStorage.getItem('password'))
     );
+    // build body
     const body = {
       title: document.getElementById('title').value,
       description: document.getElementById('description').value,
       estimatedTime: document.getElementById('estimatedTime').value,
       materialsNeeded: document.getElementById('materialsNeeded').value
     }
-    this.props.runFetch(`courses/${this.state.id}`, data => {
+    // execute update
+    this.props.runFetch(`courses/${this.state.id}`, (data, statusCode) => {
+      console.log(`status code: ${statusCode}`);
       console.log(data);
-      this.goBack(event, false);
+      if (statusCode === 200) {
+        this.goBack(event, false);
+      } else {
+        // handle invalid inputs
+        const messages = data.error.message;
+        const errorContainerId = 'error-container';
+        let errorDiv = document.getElementById(errorContainerId);
+        if (!errorDiv) {
+          errorDiv = document.createElement('div');
+          errorDiv.id = errorContainerId;
+          errorDiv.innerHTML = '<h2 class="validation--errors--label">Validation errors</h2><div class="validation-errors"><ul></ul></div>';
+          const container = document.getElementById('container');
+          container.insertBefore(errorDiv, document.getElementsByTagName('form')[0]);
+        }
+        const ul = document.getElementsByClassName('validation-errors')[0].firstChild;
+        ul.innerHTML = '';
+        messages.forEach(msg => {
+          const badParam = msg.param;
+          const capitalizedBadParam = badParam.charAt(0).toUpperCase() + badParam.slice(1);
+          const errorHtml = document.createElement('li');
+          errorHtml.innerText = `Please provide a value for "${capitalizedBadParam}"`;
+          ul.append(errorHtml);
+        });
+      }
     }, 'PUT', header, body);
   }
 
@@ -59,7 +88,7 @@ class UpdateCourse extends Component {
     return (
       <div className="bounds course--detail">
         <h1>Update Course</h1>
-        <div>
+        <div id="container">
           <form>
             <div className="grid-66">
               <div className="course--header">
