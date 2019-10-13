@@ -25,7 +25,11 @@ class App extends Component {
 
   // helper function for retrieving data
   runFetch = (path, callback, method="GET", headers={}, body) => {
-    fetch(`${api}/${path}`, {method: method, headers: new Headers(headers), body: JSON.stringify(body)}).then(response => {
+    fetch(`${api}/${path}`, {
+        method: method, 
+        headers: new Headers(headers), 
+        body: JSON.stringify(body)
+      }).then(response => {
       response.json().then(data => {
         callback(data, response.status);
       });
