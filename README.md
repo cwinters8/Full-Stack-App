@@ -1,6 +1,9 @@
 # Full Stack App
 Tenth and final project in the [Team Treehouse](http://referrals.trhou.se/clarkwinters) Full Stack JavaScript Techdegree.
 
+## Prerequisite
+A `.env` file must be present in the client app root directory with a random string value set to a variable named `REACT_APP_SECRET_KEY`. An example has been committed to the repository by the name of `.env.example`, but the actual file name when you start the app should be `.env`. This value is used in the app to encrypt and decrypt passwords. You can either come up with your own super secret string, or generate a secure one by using an [online hash generator](https://onlinehashtools.com/generate-random-sha256-hash) (recommended).
+
 ## Getting Started
 To run the app locally, you'll need a MongoDB database setup.
 First, install dependencies for the API.

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {Base64} from 'js-base64';
+import SimpleCrypto from 'simple-crypto-js';
 
 // style
 import './App.css';
@@ -16,11 +17,13 @@ import UserSignOut from './Components/UserSignOut';
 import UpdateCourse from './Components/UpdateCourse';
 
 const api = 'http://localhost:5000/api';
+const crypto = new SimpleCrypto(process.env.REACT_APP_SECRET_KEY);
 
 class App extends Component {
   state = {
     courses: [],
-    user: {}
+    user: {},
+    password: ''
   }
 
   // helper function for retrieving data
@@ -43,7 +46,11 @@ class App extends Component {
     });
     // get user data from localStorage and put it in state
     const user = JSON.parse(localStorage.getItem('user'));
-    this.setState({user: user});
+    const encryptedPassword = localStorage.getItem('password');
+    this.setState({
+      user: user,
+      password: encryptedPassword
+    });
   }
 
   // return an authorization header
@@ -58,12 +65,14 @@ class App extends Component {
   signIn = (email, password, callback) => {
     this.runFetch('users', (data, status) => {
       if (status === 200) {
+        const encryptedPassword = crypto.encrypt(password);
         this.setState({
-          user: data
+          user: data,
+          password: encryptedPassword
         });
         // persist user data
         localStorage.setItem('user', JSON.stringify(data));
-        localStorage.setItem('password', password);
+        localStorage.setItem('password', encryptedPassword);
       }
       if (callback) {
         callback(status);
@@ -74,9 +83,11 @@ class App extends Component {
   // sign out
   signOut = () => {
     this.setState({
-      user: {}
+      user: {},
+      password: ''
     });
     localStorage.removeItem('user');
+    localStorage.removeItem('password');
   }
 
   render() {
