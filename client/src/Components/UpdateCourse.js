@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import SimpleCrypto from 'simple-crypto-js';
 
 class UpdateCourse extends Component {
   state = {
@@ -16,8 +17,8 @@ class UpdateCourse extends Component {
         title: data.title,
         description: data.description,
         user: `${data.user.firstName} ${data.user.lastName}`,
-        estimatedTime: data.estimatedTime,
-        materialsNeeded: data.materialsNeeded
+        estimatedTime: data.estimatedTime || '',
+        materialsNeeded: data.materialsNeeded || ''
       });
     });
   }
@@ -41,9 +42,10 @@ class UpdateCourse extends Component {
       estimatedTime: document.getElementById('estimatedTime').value,
       materialsNeeded: document.getElementById('materialsNeeded').value
     }
+    const crypto = new SimpleCrypto(process.env.REACT_APP_SECRET_KEY);
     this.props.runFetch(`courses/${this.state.id}`, data => {
       console.log(data);
-    }, 'PUT', this.props.auth, body);
+    }, 'PUT', this.props.authHeader(JSON.parse(localStorage.getItem('user')).emailAddress, crypto.decrypt(localStorage.getItem('password'))), body);
   }
 
   render() {

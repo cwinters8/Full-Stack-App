@@ -17,7 +17,6 @@ import UserSignOut from './Components/UserSignOut';
 import UpdateCourse from './Components/UpdateCourse';
 
 const api = 'http://localhost:5000/api';
-const crypto = new SimpleCrypto(process.env.REACT_APP_SECRET_KEY);
 
 class App extends Component {
   state = {
@@ -28,6 +27,10 @@ class App extends Component {
 
   // helper function for retrieving data
   runFetch = (path, callback, method="GET", headers={}, body) => {
+    // set Content-Type header if a body is being passed in
+    if (body) {
+      headers['Content-Type'] = 'application/json';
+    }
     fetch(`${api}/${path}`, {
         method: method, 
         headers: new Headers(headers), 
@@ -65,6 +68,7 @@ class App extends Component {
   signIn = (email, password, callback) => {
     this.runFetch('users', (data, status) => {
       if (status === 200) {
+        const crypto = new SimpleCrypto(process.env.REACT_APP_SECRET_KEY);
         const encryptedPassword = crypto.encrypt(password);
         this.setState({
           user: data,
@@ -107,7 +111,7 @@ class App extends Component {
               {/* View Course Detail */}
               <Route exact path="/courses/:id" render={({match}) => <CourseDetail courseId={match.params.id} runFetch={this.runFetch} />} />
               {/* Update Course */}
-              <Route path="/courses/:id/update" render={({match}) => <UpdateCourse courseId={match.params.id} runFetch={this.runFetch} auth={this.authHeader(this.state.user.emailAddress, this.state.user.password)} />} />
+              <Route path="/courses/:id/update" render={({match}) => <UpdateCourse courseId={match.params.id} runFetch={this.runFetch} authHeader={this.authHeader} />} />
               {/* Create Course */}
             </Switch>
           </div>
