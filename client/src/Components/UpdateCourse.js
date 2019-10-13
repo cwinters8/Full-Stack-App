@@ -23,8 +23,10 @@ class UpdateCourse extends Component {
     });
   }
 
-  cancel = event => {
-    event.preventDefault();
+  goBack = (event, preventDefault=true) => {
+    if (preventDefault) {
+      event.preventDefault();
+    }
     window.location.href = `/courses/${this.state.id}`;
   }
 
@@ -36,16 +38,21 @@ class UpdateCourse extends Component {
 
   updateCourse = event => {
     event.preventDefault();
+    const crypto = new SimpleCrypto(process.env.REACT_APP_SECRET_KEY);
+    const header = this.props.authHeader(
+      JSON.parse(localStorage.getItem('user')).emailAddress, 
+      crypto.decrypt(localStorage.getItem('password'))
+    );
     const body = {
       title: document.getElementById('title').value,
       description: document.getElementById('description').value,
       estimatedTime: document.getElementById('estimatedTime').value,
       materialsNeeded: document.getElementById('materialsNeeded').value
     }
-    const crypto = new SimpleCrypto(process.env.REACT_APP_SECRET_KEY);
     this.props.runFetch(`courses/${this.state.id}`, data => {
       console.log(data);
-    }, 'PUT', this.props.authHeader(JSON.parse(localStorage.getItem('user')).emailAddress, crypto.decrypt(localStorage.getItem('password'))), body);
+      this.goBack(event, false);
+    }, 'PUT', header, body);
   }
 
   render() {
@@ -88,7 +95,7 @@ class UpdateCourse extends Component {
             </div>
             <div className="grid-100 pad-bottom">
               <button className="button" type="submit" onClick={this.updateCourse}>Update Course</button>
-              <button className="button button-secondary" onClick={this.cancel}>Cancel</button>
+              <button className="button button-secondary" onClick={this.goBack}>Cancel</button>
             </div>
           </form>
         </div>
