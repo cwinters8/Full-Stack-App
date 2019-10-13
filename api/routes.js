@@ -162,8 +162,8 @@ router.put('/courses/:id', authentication, modifyCourseAuth, [
     if (error) {
       next(error);
     }
-    res.status(204);
-    res.send();
+    res.status(200);
+    res.send({status: 'Update successful'});
   });
 });
 
