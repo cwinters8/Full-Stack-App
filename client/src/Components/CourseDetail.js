@@ -6,7 +6,8 @@ class CourseDetail extends Component {
     id: this.props.courseId,
     title: '',
     description: '',
-    user: '',
+    userId: '',
+    userName: '',
     estimatedTime: '',
     materialsNeeded: ''
   }
@@ -16,11 +17,32 @@ class CourseDetail extends Component {
       this.setState({
         title: data.title,
         description: data.description,
-        user: `${data.user.firstName} ${data.user.lastName}`,
+        userId: data.user._id,
+        userName: `${data.user.firstName} ${data.user.lastName}`,
         estimatedTime: data.estimatedTime,
         materialsNeeded: data.materialsNeeded
       });
     });
+  }
+
+  // render update/delete buttons only if the authenticated user owns the course
+  renderUpdateDelete = () => {
+    let user = localStorage.getItem('user');
+    if (user) {
+      user = JSON.parse(user);
+      if (user._id === this.state.userId) {
+        return (
+          <span>
+            <a className="button" href={`/courses/${this.state.id}/update`}>Update Course</a>
+            <a onClick={this.deleteCourse} className="button" href="/">Delete Course</a>
+          </span>
+        )
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
   }
 
   deleteCourse = () => {
@@ -35,10 +57,7 @@ class CourseDetail extends Component {
         <div className="actions--bar">
           <div className="bounds">
             <div className="grid-100">
-              <span>
-                <a className="button" href={`/courses/${this.state.id}/update`}>Update Course</a>
-                <a onClick={this.deleteCourse} className="button" href="/">Delete Course</a>
-              </span>
+              {this.renderUpdateDelete()}
               <a className="button button-secondary" href="/">Return to List</a>
             </div>
           </div>
@@ -48,7 +67,7 @@ class CourseDetail extends Component {
             <div className="course--header">
               <h4 className="course--label">Course</h4>
               <h3 className="course--title">{this.state.title}</h3>
-              <p>By {this.state.user}</p>
+              <p>By {this.state.userName}</p>
             </div>
             <div className="course--description">
               <ReactMarkdown source={this.state.description} />
