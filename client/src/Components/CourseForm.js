@@ -4,15 +4,21 @@ import SimpleCrypto from 'simple-crypto-js';
 class CourseForm extends Component {
   
   state = {
+    action: '',
     id: this.props.courseId || '',
     title: '',
     description: '',
-    user: `${localStorage.getItem('user').firstName} ${localStorage.getItem('user').lastName}`,
+    user: '',
     estimatedTime: '',
     materialsNeeded: ''
   }
 
   componentDidMount() {
+    // set the create or update action
+    this.setState({
+      action: this.getAction()
+    });
+    // if this is an update, get course data
     if (this.getAction() === 'update') {
       this.props.runFetch(`courses/${this.state.id}`, data => {
         this.setState({
@@ -23,6 +29,12 @@ class CourseForm extends Component {
           materialsNeeded: data.materialsNeeded || ''
         });
       });
+    } else {
+      // otherwise, just get the user's name from local storage
+      const user = JSON.parse(localStorage.getItem('user'));
+      this.setState({
+        user: `${user.firstName} ${user.lastName}`
+      });
     }
   }
 
@@ -31,7 +43,6 @@ class CourseForm extends Component {
     // parse URL path to determine if we are updating or creating a course
     const path = window.location.pathname.split('/');
     let action = path[path.length - 1];
-    console.log(`Create or update? ${action}`);
     if (capitalize) {
       action = action.charAt(0).toUpperCase() + action.slice(1);
     }
@@ -50,7 +61,11 @@ class CourseForm extends Component {
     if (preventDefault) {
       event.preventDefault();
     }
-    window.location.href = `/courses/${this.state.id}`;
+    if (this.state.action === 'update') {
+      window.location.href = `/courses/${this.state.id}`;
+    } else {
+      window.location.href = '/';
+    }
   }
 
   updateOrCreateCourse = event => {
@@ -71,11 +86,10 @@ class CourseForm extends Component {
     };
 
     // define method for fetch
-    const action = this.getAction();
     let method;
-    if (action === 'update') {
+    if (this.state.action === 'update') {
       method = 'PUT';
-    } else if (action === 'create') {
+    } else if (this.state.action === 'create') {
       method = 'POST';
     }
 
@@ -150,7 +164,7 @@ class CourseForm extends Component {
               </div>
             </div>
             <div className="grid-100 pad-bottom">
-              <button className="button" type="submit" onClick={this.updateCourse}>{this.getAction(true)} Course</button>
+              <button className="button" type="submit" onClick={this.updateOrCreateCourse}>{this.getAction(true)} Course</button>
               <button className="button button-secondary" onClick={this.goToCourse}>Cancel</button>
             </div>
           </form>
