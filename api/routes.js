@@ -134,8 +134,11 @@ router.post('/courses', authentication, [
     materialsNeeded: req.body.materialsNeeded
   }).then(data => {
     res.location(`/api/courses/${data._id}`);
-    res.status(201);
-    res.send();
+    res.status(200);
+    res.send({
+      status: 'Create successful',
+      id: data._id
+    });
   });
 });
 

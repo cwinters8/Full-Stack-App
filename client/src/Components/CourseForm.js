@@ -61,7 +61,7 @@ class CourseForm extends Component {
     if (preventDefault) {
       event.preventDefault();
     }
-    if (this.state.action === 'update') {
+    if (this.state.id.length > 0) {
       window.location.href = `/courses/${this.state.id}`;
     } else {
       window.location.href = '/';
@@ -98,6 +98,9 @@ class CourseForm extends Component {
       console.log(`status code: ${statusCode}`);
       console.log(data);
       // if course ID is returned in data, put it into state
+      if (data.id) {
+        this.setState({id: data.id});
+      }
       if (statusCode === 200) {
         this.goToCourse(event, false);
       } else {
