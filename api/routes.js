@@ -176,8 +176,8 @@ router.delete('/courses/:id', authentication, modifyCourseAuth, (req, res) => {
     if (error) {
       next(error);
     }
-    res.status(204);
-    res.send();
+    res.status(200);
+    res.send({status: 'Delete successful'});
   });
 });
 

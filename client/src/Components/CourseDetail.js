@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ReactMarkdown from 'react-markdown';
+import SimpleCrypto from 'simple-crypto-js';
 
 class CourseDetail extends Component {
   state = {
@@ -45,10 +46,20 @@ class CourseDetail extends Component {
     }
   }
 
-  deleteCourse = () => {
+  deleteCourse = async event => {
+    event.preventDefault();
+    // build authorization header
+    const crypto = new SimpleCrypto(process.env.REACT_APP_SECRET_KEY);
+    const header = this.props.authHeader(
+      JSON.parse(localStorage.getItem('user')).emailAddress, 
+      crypto.decrypt(localStorage.getItem('password'))
+    );
+
+    // execute delete
     this.props.runFetch(`courses/${this.state.id}`, data => {
       console.log(data);
-    }, "DELETE");
+      window.location.href = '/';
+    }, "DELETE", header);
   }
 
   render() {

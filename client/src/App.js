@@ -112,7 +112,7 @@ class App extends Component {
               {/* Create Course */}
               <Route exact path="/courses/create" render={() => <CreateCourse runFetch={this.runFetch} authHeader={this.authHeader} />} />
               {/* View Course Detail */}
-              <Route exact path="/courses/:id" render={({match}) => <CourseDetail courseId={match.params.id} runFetch={this.runFetch} />} />
+              <Route exact path="/courses/:id" render={({match}) => <CourseDetail courseId={match.params.id} runFetch={this.runFetch} authHeader={this.authHeader} />} />
               {/* Update Course */}
               <Route path="/courses/:id/update" render={({match}) => <UpdateCourse courseId={match.params.id} runFetch={this.runFetch} authHeader={this.authHeader} />} />
             </Switch>
