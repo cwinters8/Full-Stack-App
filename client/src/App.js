@@ -16,6 +16,7 @@ import UserSignIn from './Components/UserSignIn';
 import UserSignOut from './Components/UserSignOut';
 import UpdateCourse from './Components/UpdateCourse';
 import CreateCourse from './Components/CreateCourse';
+import UserSignUp from './Components/UserSignUp';
 
 const api = 'http://localhost:5000/api';
 
@@ -95,6 +96,28 @@ class App extends Component {
     localStorage.removeItem('password');
   }
 
+  cancel = event => {
+    event.preventDefault();
+    window.location.href = '/';
+  }
+
+  removeElementById = (id, parentId) => {
+    const parent = document.getElementById(parentId);
+    const elem = document.getElementById(id);
+    if (elem) {
+      parent.removeChild(elem);
+    }
+  }
+
+  appendMessage = (msg, msgId, parentId, insertBeforeId) => {
+    const p = document.createElement('p');
+    p.id = msgId;
+    p.textContent = msg;
+    const parent = document.getElementById(parentId);
+    const elemToInsertBefore = document.getElementById(insertBeforeId);
+    parent.insertBefore(p, elemToInsertBefore);
+  }
+
   render() {
     return (
       <BrowserRouter>
@@ -105,8 +128,10 @@ class App extends Component {
             <Switch>
               {/* Default Route */}
               <Route exact path="/" render={() => <Courses courses={this.state.courses}/>} />
+              {/* Sign Up */}
+              <Route path="/sign-up" render={() => <UserSignUp signIn={this.signIn} runFetch={this.runFetch} cancel={this.cancel} removeElementById={this.removeElementById} appendMessage={this.appendMessage} />} />
               {/* Sign In */}
-              <Route path="/sign-in" render={() => <UserSignIn signIn={this.signIn}/>} />
+              <Route path="/sign-in" render={() => <UserSignIn signIn={this.signIn} cancel={this.cancel} removeElementById={this.removeElementById} appendMessage={this.appendMessage} />} />
               {/* Sign Out */}
               <Route path="/sign-out" render={() => <UserSignOut signOut={this.signOut} />} />
               {/* Create Course */}

@@ -1,3 +1,7 @@
 button.button {
   cursor: pointer;
 }
+
+#error {
+  color: red;
+}

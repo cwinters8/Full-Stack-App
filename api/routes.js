@@ -98,8 +98,11 @@ router.post('/users', [
     password: password
   }).then(data => {
     res.location('/');
-    res.status(201);
-    res.send();
+    res.status(200);
+    res.send({
+      status: 'Create successful',
+      id: data._id
+    });
   }).catch(err => {
     err.status = 400;
     console.error(err);
