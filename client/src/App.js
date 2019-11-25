@@ -17,6 +17,7 @@ import UserSignOut from './Components/UserSignOut';
 import UpdateCourse from './Components/UpdateCourse';
 import CreateCourse from './Components/CreateCourse';
 import UserSignUp from './Components/UserSignUp';
+import NotFound from './Components/NotFound';
 
 const api = 'http://localhost:5000/api';
 
@@ -140,6 +141,8 @@ class App extends Component {
               <Route exact path="/courses/:id" render={({match}) => <CourseDetail courseId={match.params.id} runFetch={this.runFetch} authHeader={this.authHeader} />} />
               {/* Update Course */}
               <Route path="/courses/:id/update" render={({match}) => <UpdateCourse courseId={match.params.id} runFetch={this.runFetch} authHeader={this.authHeader} />} />
+              {/* Not Found */}
+              <Route path="/notfound" render={() => <NotFound />} />
             </Switch>
           </div>
         </div>

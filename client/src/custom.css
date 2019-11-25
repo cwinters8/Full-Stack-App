@@ -5,3 +5,13 @@ button.button {
 #error {
   color: red;
 }
+
+.robot img {
+  display: block;
+  height: 80vh;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  object-fit: scale-down;
+}

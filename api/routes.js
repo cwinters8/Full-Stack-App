@@ -121,7 +121,10 @@ router.get('/courses', (req, res) => {
 router.get('/courses/:id', (req, res) => {
   Course.findById(req.params.id).populate('user', 'firstName lastName').then(data => {
     res.json(data);
-  });
+  }).catch(error => {
+    res.status(404);
+    res.send(error);
+  })
 });
 
 // create a new course
