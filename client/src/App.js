@@ -23,7 +23,6 @@ const api = 'http://localhost:5000/api';
 
 class App extends Component {
   state = {
-    courses: [],
     user: {},
     password: ''
   }
@@ -46,10 +45,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // get courses and put them into state
-    this.runFetch('courses', data => {
-      this.setState({courses: data});
-    });
     // get user data from localStorage and put it in state
     const user = JSON.parse(localStorage.getItem('user'));
     const encryptedPassword = localStorage.getItem('password');
@@ -128,7 +123,7 @@ class App extends Component {
             <hr />
             <Switch>
               {/* Default Route */}
-              <Route exact path="/" render={() => <Courses courses={this.state.courses}/>} />
+              <Route exact path="/" render={() => <Courses runFetch={this.runFetch} authHeader={this.authHeader} />} />
               {/* Sign Up */}
               <Route path="/sign-up" render={() => <UserSignUp signIn={this.signIn} runFetch={this.runFetch} cancel={this.cancel} removeElementById={this.removeElementById} appendMessage={this.appendMessage} />} />
               {/* Sign In */}

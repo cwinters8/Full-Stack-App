@@ -1,10 +1,21 @@
 import React, {Component} from 'react';
 
 class Courses extends Component {
+  state = {
+    courses: []
+  };
+
+  componentDidMount() {
+    // get courses and put them into state
+    this.props.runFetch('courses', data => {
+      this.setState({courses: data});
+    });
+  }
+
   render() {
     return (
       <div className="bounds">
-        {this.props.courses.map(course => {
+        {this.state.courses.map(course => {
           const id = course._id;
           const link = `/courses/${id}`;
           return <div key={id} className="grid-33">
