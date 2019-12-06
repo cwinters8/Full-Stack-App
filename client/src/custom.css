@@ -15,3 +15,7 @@ button.button {
   margin-bottom: 30px;
   object-fit: scale-down;
 }
+
+#denied {
+  margin-top: 20px;
+}

@@ -21,7 +21,11 @@ class CourseForm extends Component {
     // if this is an update, get course data
     if (this.getAction() === 'update') {
       this.props.runFetch(`courses/${this.state.id}`, (data, statusCode) => {
-        if (statusCode === 200) {
+        const userId = data.user._id;
+        const loggedInUser = JSON.parse(localStorage.getItem('user'));
+        if (userId !== loggedInUser._id) {
+          window.location.href = '/forbidden';
+        } else if (statusCode === 200) {
           this.setState({
             title: data.title,
             description: data.description,

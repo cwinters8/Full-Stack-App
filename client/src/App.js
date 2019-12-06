@@ -18,6 +18,7 @@ import UpdateCourse from './Components/UpdateCourse';
 import CreateCourse from './Components/CreateCourse';
 import UserSignUp from './Components/UserSignUp';
 import NotFound from './Components/NotFound';
+import Forbidden from './Components/Forbidden';
 
 const api = 'http://localhost:5000/api';
 
@@ -154,6 +155,8 @@ class App extends Component {
               <Route path="/courses/:id/update" render={({match}) => <UpdateCourse courseId={match.params.id} runFetch={this.runFetch} authHeader={this.authHeader} />} />
               {/* Not Found */}
               <Route path="/notfound" render={() => <NotFound />} />
+              {/* Forbidden */}
+              <Route path="/forbidden" render={() => <Forbidden />} />
             </Switch>
           </div>
         </div>
