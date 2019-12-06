@@ -20,14 +20,18 @@ class CourseForm extends Component {
     });
     // if this is an update, get course data
     if (this.getAction() === 'update') {
-      this.props.runFetch(`courses/${this.state.id}`, data => {
-        this.setState({
-          title: data.title,
-          description: data.description,
-          user: `${data.user.firstName} ${data.user.lastName}`,
-          estimatedTime: data.estimatedTime || '',
-          materialsNeeded: data.materialsNeeded || ''
-        });
+      this.props.runFetch(`courses/${this.state.id}`, (data, statusCode) => {
+        if (statusCode === 200) {
+          this.setState({
+            title: data.title,
+            description: data.description,
+            user: `${data.user.firstName} ${data.user.lastName}`,
+            estimatedTime: data.estimatedTime || '',
+            materialsNeeded: data.materialsNeeded || ''
+          });
+        } else {
+          window.location.href = '/notfound';
+        }
       });
     } else {
       // otherwise, just get the user's name from local storage
