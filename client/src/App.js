@@ -163,6 +163,8 @@ class App extends Component {
               <Route path="/forbidden" render={() => <Forbidden />} />
               {/* Error */}
               <Route path="/error" render={() => <UnhandledError />} />
+              {/* Render the NotFound component if no other route matches */}
+              <Route component={NotFound} />
             </Switch>
           </div>
         </div>
