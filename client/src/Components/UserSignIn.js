@@ -16,8 +16,7 @@ class UserSignIn extends Component {
     // attempt sign in
     this.props.signIn(email, password, status => {
       if (status === 200) {
-        // route to previous page if sign in is successful
-        window.history.back();
+        this.props.redirect();
       } else {
         // create error object and append to the DOM
         this.props.appendMessage('Invalid credentials. Please check your email and password then try again.', errorId, formId, buttonsId);

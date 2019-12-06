@@ -32,8 +32,7 @@ class UserSignUp extends Component {
       if (statusCode === 200) {
         this.props.signIn(emailAddress, password, status => {
           if (status === 200) {
-            // route to home if sign in is successful
-            window.location.href = '/';
+            this.props.redirect(true);
           } else {
             // append an error
             this.props.appendMessage(`Failed to sign in. Status code ${status}`, errorId, formId, buttonsId);

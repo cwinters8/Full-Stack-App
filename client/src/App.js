@@ -114,6 +114,22 @@ class App extends Component {
     parent.insertBefore(p, elemToInsertBefore);
   }
 
+  // check for a 'continue' item in local storage that specifies where to redirect to after sign in/up
+  redirect = (goHome=false) => {
+    const continuePath = localStorage.getItem('continue');
+    if (continuePath) {
+      localStorage.removeItem('continue');
+      window.location.href = continuePath;
+    } else {
+      // if no 'continue' item is found, go back a page or home if specified
+      if (goHome) {
+        window.location.href = '/';
+      } else {
+        window.history.back();
+      }
+    }
+  }
+
   render() {
     return (
       <BrowserRouter>
@@ -125,9 +141,9 @@ class App extends Component {
               {/* Default Route */}
               <Route exact path="/" render={() => <Courses runFetch={this.runFetch} authHeader={this.authHeader} />} />
               {/* Sign Up */}
-              <Route path="/sign-up" render={() => <UserSignUp signIn={this.signIn} runFetch={this.runFetch} cancel={this.cancel} removeElementById={this.removeElementById} appendMessage={this.appendMessage} />} />
+              <Route path="/sign-up" render={() => <UserSignUp signIn={this.signIn} runFetch={this.runFetch} cancel={this.cancel} removeElementById={this.removeElementById} appendMessage={this.appendMessage} redirect={this.redirect} />} />
               {/* Sign In */}
-              <Route path="/sign-in" render={() => <UserSignIn signIn={this.signIn} cancel={this.cancel} removeElementById={this.removeElementById} appendMessage={this.appendMessage} />} />
+              <Route path="/sign-in" render={() => <UserSignIn signIn={this.signIn} cancel={this.cancel} removeElementById={this.removeElementById} appendMessage={this.appendMessage} redirect={this.redirect} />} />
               {/* Sign Out */}
               <Route path="/sign-out" render={() => <UserSignOut signOut={this.signOut} />} />
               {/* Create Course */}
