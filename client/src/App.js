@@ -19,6 +19,7 @@ import CreateCourse from './Components/CreateCourse';
 import UserSignUp from './Components/UserSignUp';
 import NotFound from './Components/NotFound';
 import Forbidden from './Components/Forbidden';
+import Error from './Components/Error';
 
 const api = 'http://localhost:5000/api';
 
@@ -39,9 +40,12 @@ class App extends Component {
         headers: new Headers(headers), 
         body: JSON.stringify(body)
       }).then(response => {
-      response.json().then(data => {
-        callback(data, response.status);
-      });
+        if (response.status === 500) {
+          window.location.href = '/error';
+        }
+        response.json().then(data => {
+          callback(data, response.status);
+        });
     });
   }
 
@@ -157,6 +161,8 @@ class App extends Component {
               <Route path="/notfound" render={() => <NotFound />} />
               {/* Forbidden */}
               <Route path="/forbidden" render={() => <Forbidden />} />
+              {/* Error */}
+              <Route path="/error" render={() => <Error />} />
             </Switch>
           </div>
         </div>
