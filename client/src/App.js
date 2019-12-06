@@ -19,7 +19,7 @@ import CreateCourse from './Components/CreateCourse';
 import UserSignUp from './Components/UserSignUp';
 import NotFound from './Components/NotFound';
 import Forbidden from './Components/Forbidden';
-import Error from './Components/Error';
+import UnhandledError from './Components/UnhandledError';
 
 const api = 'http://localhost:5000/api';
 
@@ -162,7 +162,7 @@ class App extends Component {
               {/* Forbidden */}
               <Route path="/forbidden" render={() => <Forbidden />} />
               {/* Error */}
-              <Route path="/error" render={() => <Error />} />
+              <Route path="/error" render={() => <UnhandledError />} />
             </Switch>
           </div>
         </div>
