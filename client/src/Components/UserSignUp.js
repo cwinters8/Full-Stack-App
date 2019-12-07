@@ -7,7 +7,11 @@ const buttonsId = 'buttons';
 class UserSignUp extends Component {
   signUp = event => {
     event.preventDefault();
-    this.props.removeElementById(errorId, formId);
+    // remove any errors present
+    const errors = document.querySelectorAll(`[id="${errorId}"]`);
+    errors.forEach(err => {
+      err.parentNode.removeChild(err);
+    });
     // get form values
     const firstName = document.getElementById('firstName').value;
     const lastName = document.getElementById('lastName').value;
@@ -42,6 +46,11 @@ class UserSignUp extends Component {
       } else {
         // append an error
         this.props.appendMessage(`Failed to create user. Status code ${statusCode}`, errorId, formId, buttonsId);
+        // append errors returned from the API
+        const messages = data.error.message;
+        messages.forEach(msg => {
+          this.props.appendMessage(`${msg.msg} for ${msg.param}`, errorId, formId, buttonsId);
+        });
         console.log(data);
       }
     }, 'POST', {}, body);
