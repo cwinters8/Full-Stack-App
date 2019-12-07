@@ -20,6 +20,7 @@ import UserSignUp from './Components/UserSignUp';
 import NotFound from './Components/NotFound';
 import Forbidden from './Components/Forbidden';
 import UnhandledError from './Components/UnhandledError';
+import PrivateRoute from './Components/PrivateRoute';
 
 const api = 'http://localhost:5000/api';
 
@@ -152,11 +153,11 @@ class App extends Component {
               {/* Sign Out */}
               <Route path="/sign-out" render={() => <UserSignOut signOut={this.signOut} />} />
               {/* Create Course */}
-              <Route exact path="/courses/create" render={() => <CreateCourse runFetch={this.runFetch} authHeader={this.authHeader} />} />
+              <PrivateRoute path="/courses/create" render={() => <CreateCourse runFetch={this.runFetch} authHeader={this.authHeader} />} />
               {/* View Course Detail */}
               <Route exact path="/courses/:id" render={({match}) => <CourseDetail courseId={match.params.id} runFetch={this.runFetch} authHeader={this.authHeader} />} />
               {/* Update Course */}
-              <Route path="/courses/:id/update" render={({match}) => <UpdateCourse courseId={match.params.id} runFetch={this.runFetch} authHeader={this.authHeader} />} />
+              <PrivateRoute path="/courses/:id/update" render={({match}) => <UpdateCourse courseId={match.params.id} runFetch={this.runFetch} authHeader={this.authHeader} />} />
               {/* Not Found */}
               <Route path="/notfound" render={() => <NotFound />} />
               {/* Forbidden */}
